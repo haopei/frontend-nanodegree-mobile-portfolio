@@ -1,0 +1,161 @@
+WEBSITE OPTIMIZATION GOALS
+	Runs consistantly at 60 frames per second
+	PageSpeed score of 90+
+	Code is neatly formatted
+	Comments are thorough and concise. Code is self-documenting. 
+	A README file included which details all the steps required to run the app successfully
+
+Critical Rendering Path
+	A sequence of steps that the browser takes to render a page.
+
+	DOM
+	[JS]
+	CSSOM
+	RENDERING TREE
+	LAYOUT
+	PAINT
+
+	CRP Metrics
+		1. Critical Path Length (shorten this)
+		2. Number of Critical Resources (js, css; reduce this)
+		3. Number of critical bytes (size of all critical resources; reduce this)
+
+	Optimization involves 'progressive rendering' - or incrementally build the page as the nodes become available.
+
+	** Critical Resources are resources you need to GET
+
+	The browser has a 'preload scanner' which peaks ahead for critical files like .js and request downloads of these files. http://andydavies.me/blog/2013/10/22/how-the-browser-pre-loader-makes-pages-load-faster/
+
+	When ATF resources to be requested are more than 14.6kb compressed, additional round trips is required. 
+
+Tokenizer
+	Whenever we encounter an HTML tag, the browser emits a token. For example: "StartTag: HTML" token when the browser encounters <html>. The same process is used to identify all other elements in the document (StartTag:head, Tag: meta, StartTag: body, StartTag: p, hello, EngTag: HTML). Each node would still contain its respective attributes. For example: the <img> tag would contain its src and alt attributes. 
+
+1. The DOM
+	When the HTML page (example: index.html) is requested and received, the DOM begins constructing by parsing HTML. 
+
+	Once the tokenizer identifies all nodes, and establish the relationships among them (parent or child), the DOM is created as a result. The browser constructs the DOM incrementally. 
+
+	A single DOM node consists of both its StartTag and EndTag token.
+
+	Javascript blocks DOM construction, unless it is declared as async. Blocks parallel downloads.
+
+
+2. The CSSOM
+	
+	Unlike DOM building, CSSOM building is not incremental; the entire CSS file must be loaded before further action.
+
+	All visibe content is part of the BODY node. 
+
+	By default, CSS is render-blocking; the browser blocks rendering until it has received all CSS files. To make CSS files non-render blocking, we can use CSS Media Queries to only load files when they meet the conditions in which they are required. 
+
+	While CSSOM-building blocks rendering/painting, it does not block DOM-building. Only when both CSSOM and DOM are built can we begin rendering. 
+
+	The more general the style selector, the easier its css is to evaluate. A specific selector need to find its target to be styled, and then move up the DOM tree to verify if the selection conditions are met before styling it. For example: 
+		div p {...}
+		The <p> tags are identified and then the browser needs to walk 'upwards' the DOM to see if it has a 'div' parent. General selectors do not have this extra step of work. 
+
+	Before you rewrite your CSS rules, you should record the time the steps take in the timeline. Measure first, the optimize as needed. 
+
+	Before the CSSOM is built, javascript codes are blocked from executing. There, CSS can block HTML rendering and javascript execution.
+
+3. The Render Tree
+	Built using the DOM and CSSOM. 
+	Captures both content and the styles.
+	Only captures visible content; contains only the nodes required to render a page. If a node has a style of display:none, the render tree ignores this since it is not visible. The <head> section also contains no visible content, so that is also pruned or ignored. 
+
+	Paint is the final step of the rendering tree, and renders the pixels to the screen.
+
+4. Layout 
+	Figures out where to put the elements on the page. The 'layout' event in the Timeline renders the page's position. Whenever there is a change in the content, device orientation, or the css in the page, a new layout event may be triggered. To optimize, and to avoid multiple layout events, it is recommended to 'batch updates'. 
+
+5. Paint
+	Paints pixels to the browser. Paint event is triggered when changes are made, similar to Layout. 
+
+
+BLOCKING
+	Javascript: blocks HTML Parsing (hence DOM construction), unless declared async. Inline JS will not be spotted by the pre-load scanner which only looks for src/href. 
+
+	Loading CSS: Blocks JS execution; blocks rendering. 
+
+Dev Tool
+	Timeline > Parse HTML > Recalculate Style (EVENT)
+		Computes all the styles for the contents which are visible on the screen. 
+
+FRAME
+	A frame represents the work that the browser must do to render a single grame of content to the display - dun js, handle events, update the dom, and change styls, layout and paint the page. 
+
+Javascript
+	Can modify the DOM and CSSOM
+	JS execution is parser-blocking and is blocked by CSSOM's building; when the <script> tag is encountered, unless script is declared as async, the HTML parser pauses building the DOM, hands it over to the JS runtime, and finishes executing the inline JS code first. Then, it resumes building the DOM.
+
+	Scripts which do not affect the DOM (example: analytics) and should not block rendering. One way to do this is to use the windows.onload event to execute the script after the document has finished building. A better way is to use the async declaration in the <script src="analytics.js" async> tag.
+
+	https://developers.google.com/web/fundamentals/performance/critical-rendering-path/adding-interactivity-with-javascript
+
+	The 'async' attribute inside <script> tells the browser to not let this the loading and execution of this script file to block the DOM and CSSOM building. Async file requests are not part of the CRP
+
+Optimizing:
+	1. Minify, compress, cache (html, css, js)
+	2. Minimize use of render-blocking resources (css); use media queries and inline css 
+	3. Minimize use of parser blocking resources (js); defer js execution, use async
+
+	
+	RULES: https://www.udacity.com/course/viewer#!/c-ud884/l-1469569174/m-1565708614
+	Page should ideally be <14kb
+
+	Resources Minification
+		https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/optimize-encoding-and-transfer#minification-preprocessing--context-specific-optimizations
+	minify css
+		CSS can block html rendering and javascript executions, since JS can only run after the CSSOM is built.
+	separate render blocking css
+	Prioritize critical CSS
+			https://developers.google.com/speed/pagespeed/service/PrioritizeCriticalCss
+	Text Compression with gZIP
+		https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/optimize-encoding-and-transfer#text-compression-with-gzip	
+	HTTP Caching
+		https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching
+
+
+    <script>
+      var cb = function() {
+        var l = document.createElement('link'); l.rel = 'stylesheet';
+        l.href = 'css/style.css';
+        var h = document.getElementsByTagName('head')[0]; h.parentNode.insertBefore(l, h);
+      };
+      var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+          webkitRequestAnimationFrame || msRequestAnimationFrame;
+      if (raf) raf(cb);
+      else window.addEventListener('load', cb);
+    </script>
+
+FRAME RATE AND JANK
+	Frame rate is the rate at which images are consecutively produced on the screen. 
+
+	The paint speed directly influences frame rate, and paint is influenced by long js execution, downloads and similar things. 
+
+	Jank is the break in consistent frame rate.
+
+	If you’re targeting 60 FPS, then to match the refresh rate of the devices we commonly use, you’ll have a 16.7-millisecond budget in which to complete everything — JavaScript, layout, image decoding and resizing, painting, compositing — everything.
+
+	If you’re aiming for low-end devices, such as mobile phones, then that frame budget of 16 milliseconds is really more like 8 to 10 milliseconds.
+
+	One common mistake is to stuff just way too much JavaScript into the onscroll handlers of a page — making it difficult to meet the frame budget at all. Aligning the work to the rendering pipeline (for example, by placing it in requestAnimationFrame) gives you a little more headroom, but you still have only those few milliseconds in which to get everything done.
+
+	The best thing you can do is just capture values such as scrollTop in your scroll handlers, and then use the most recent value inside a requestAnimationFrame callback.
+
+	We want to see the browser painting the new stuff on the screen, and not the entire page
+
+	Don't paint accidentally
+
+	use translatex for animation; actually translate 3d
+
+	PIZZA PAGE IMPROVEMENTS
+		Contact us's onsubmit js blocking parsing html
+
+		Resources
+			Speed Checklist: http://www.sitespeed.io/rules/
+
+			Web Optimize Slideshow: https://docs.google.com/presentation/d/1IRHyU7_crIiCjl0Gvue0WY3eY_eYvFQvSfwQouW9368/present?slide=id.p19
+
+			Caching Checklist: https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching#caching-checklist
