@@ -282,9 +282,12 @@ function getNoun(y) {
   }; 
 };
 
-var adjectives = ["dark", "color", "whimsical", "shiny", "noise", "apocalyptic", "insulting", "praise", "scientific"];  // types of adjectives for pizza titles
-var nouns = ["animals", "everyday", "fantasy", "gross", "horror", "jewelry", "places", "scifi"];                        // types of nouns for pizza titles
+// types of adjectives for pizza titles
+var adjectives = ["dark", "color", "whimsical", "shiny", "noise", "apocalyptic", "insulting", "praise", "scientific"];
+// types of nouns for pizza titles
+var nouns = ["animals", "everyday", "fantasy", "gross", "horror", "jewelry", "places", "scifi"];
 
+// - Returns pizza name
 // Generates random numbers for getAdj and getNoun functions and returns a new pizza name
 function generator(adj, noun) {
   var adjectives = getAdj(adj);
@@ -295,6 +298,7 @@ function generator(adj, noun) {
   return name;
 };
 
+// - Uses generator() to return random pizza name (The + adj + noun)
 // Chooses random adjective and random noun
 function randomName() {
   var randomNumberAdj = parseInt(Math.random() * adjectives.length);
@@ -328,6 +332,7 @@ var selectRandomCrust = function() {
   return randomCrust;
 }
 
+// - wraps a string within <li>, used by makeRandomPizza()
 var ingredientItemizer = function(string) {
   return "<li>" + string + "</li>";
 }
@@ -339,6 +344,10 @@ var makeRandomPizza = function() {
   var numberOfMeats = Math.floor((Math.random() * 4));
   var numberOfNonMeats = Math.floor((Math.random() * 3));
   var numberOfCheeses = Math.floor((Math.random() * 2));
+  
+  // var numberOfMeats = 1;
+  // var numberOfNonMeats = 1;
+  // var numberOfCheeses = 1;
 
   for (var i = 0; i < numberOfMeats; i++) {
     pizza = pizza + ingredientItemizer(selectRandomMeat());
@@ -421,7 +430,8 @@ var resizePizzas = function(size) {
 
   changeSliderLabel(size);
 
-  // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
+  // Returns the size difference to change a pizza element from one size to another. 
+  // Called by changePizzaSizes(size).
   function determineDx (elem, size) {
     var oldwidth = elem.offsetWidth;
     var windowwidth = document.querySelector("#randomPizzas").offsetWidth;
@@ -450,11 +460,21 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
+
+    // ORIGINAL
+    // for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
+    //   var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
+    //   var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
+    //   document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
+    // }
+
+    // - added this variable so the size is not calculated each time
+    var pizzaContainerLength = document.querySelectorAll(".randomPizzaContainer").length;
+    for (var i = 0; i < pizzaContainerLength; i++) {
       var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
       var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
       document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
-    }
+    }    
   }
 
   changePizzaSizes(size);
@@ -525,7 +545,7 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+  for (var i = 0; i < 20; i++) { 
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
