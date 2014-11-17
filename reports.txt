@@ -14,6 +14,7 @@ Changes
 	> saved all images and optimized using kraken.io
 	> separate phone.css
 	> inlined css
+	> create array loop for pizza creation
 
 	
 

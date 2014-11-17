@@ -544,7 +544,6 @@ function onScroll() {
 // Moves the sliding background pizzas based on scroll position
 function updatePositions() {
   frame++;
-  console.log(ticking);
   requestAnimationFrame(updatePositions);
   ticking = false;
 
@@ -556,7 +555,8 @@ function updatePositions() {
   var scrollTop = latestKnownScrollY;
   for (var i = 0; i < itemsLength; i++) {
     var phase = Math.sin((scrollTop / 1250) + (i % 5));
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+    items[i].style.transform = "translateX(" + 100*phase + "px)";
+    // items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
   window.performance.mark("mark_end_frame");
@@ -582,7 +582,9 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.width = "77px";
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
+    elem.style.transform = "translateX(" + elem.basicLeft + "px)";
     allPizzas.push(elem);
+    console.log(elem.basicLeft);
   }
   console.log(allPizzas);
 
