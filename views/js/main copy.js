@@ -516,38 +516,20 @@ function logAverageFrame(times) {
   console.log("Average time to generate last 10 frames: " + sum / 10 + "ms");
 }
 
-// Debouncing Scroll Event
-// http://www.html5rocks.com/en/tutorials/speed/scrolling/#toc-debouncing
-// 1. Cached the last known scroll. 
-// 2. 
-
-// caches the latest scroll vertical position of the browser
-var latestKnownScrollY = 0;
-// ticking ensures rAF runs only on scroll
-var ticking = false;
-
-function onScroll() {
-  // onScroll runs on the 'scroll' event
-  // When user scrolls, the scrollY is recorded.
-  latestKnownScrollY = window.scrollY;
-}
-
 // The following code for sliding background pizzas was pulled from Ilya's demo found at:
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 
 // Moves the sliding background pizzas based on scroll position
 function updatePositions() {
   frame++;
-  // this recursion is not looped because the rest of the code below has to run
-  requestAnimationFrame(updatePositions);
   window.performance.mark("mark_start_frame");
   // TODO: something about saving the scroll position in a variable AKA debouncing scroll events
   // http://www.html5rocks.com/en/tutorials/speed/scrolling/#toc-debouncing
   var items = document.querySelectorAll('.mover');
   var itemsLength = items.length;
-  var scrollTop = latestKnownScrollY;
+  var scrollTop = document.body.scrollTop;
   for (var i = 0; i < itemsLength; i++) {
-    var phase = Math.sin((scrollTop / 1250) + (i % 5));
+    var phase = Math.sin((scrollTop /1250) + (i % 5));
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
@@ -555,12 +537,12 @@ function updatePositions() {
   window.performance.measure("measure_frame_duration", "mark_start_frame", "mark_end_frame");
   if (frame % 10 === 0) {
     var timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");
-    // logAverageFrame(timesToUpdatePosition);
+    logAverageFrame(timesToUpdatePosition);
   }
 }
 
-// runs onScroll() on scroll
-window.addEventListener('scroll', onScroll, false);
+// runs updatePositions on scroll
+window.addEventListener('scroll', updatePositions);
 
 // Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function() {

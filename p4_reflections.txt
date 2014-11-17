@@ -148,14 +148,7 @@ FRAME RATE AND JANK
 
 	Don't paint accidentally
 
-	use translatex for animation; actually translate 3d
+	use translateX for animation; actually translate 3d
 
 	PIZZA PAGE IMPROVEMENTS
 		Contact us's onsubmit js blocking parsing html
-
-		Resources
-			Speed Checklist: http://www.sitespeed.io/rules/
-
-			Web Optimize Slideshow: https://docs.google.com/presentation/d/1IRHyU7_crIiCjl0Gvue0WY3eY_eYvFQvSfwQouW9368/present?slide=id.p19
-
-			Caching Checklist: https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching#caching-checklist

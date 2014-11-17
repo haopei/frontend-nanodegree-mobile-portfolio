@@ -1,3 +1,8 @@
+General
+	Request Animation Frame takes a callback function, and requests the frame for the next re-paint cycle.
+
+	Browsers try to paint 60 frames per second
+
 Changes 
 	> perfmatters.js below
 	+ media="print" to print.css 
@@ -7,7 +12,9 @@ Changes
 	> analytics.js below.
 	- google analytics (not required)
 	> saved all images and optimized using kraken.io
-	> separated bootstrap files by min-width
+	> separate phone.css
+	> inlined css
+
 	
 
 Notes
@@ -25,14 +32,13 @@ Notes
 Load Non-Critical CSS on pageload
 	source: https://docs.google.com/presentation/d/1IRHyU7_crIiCjl0Gvue0WY3eY_eYvFQvSfwQouW9368/present?slide=id.gebc26cd7_8_52
 
-	...
-	<script>
-		function run_after_onload() {
-			Load('stylesheet', 'remainder.css');
-		}
-	</script>
-	</body>
+Self-documenting codes
+	http://stackoverflow.com/questions/209015/what-is-self-documenting-code-and-can-it-replace-well-documented-code
 
-Status
-	Mobile: 68
-	Desktop: 79
+
+	Resources
+		Speed Checklist: http://www.sitespeed.io/rules/
+
+		Web Optimize Slideshow: https://docs.google.com/presentation/d/1IRHyU7_crIiCjl0Gvue0WY3eY_eYvFQvSfwQouW9368/present?slide=id.p19
+
+		Caching Checklist: https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching#caching-checklist	
