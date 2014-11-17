@@ -16,6 +16,12 @@ Cameron Pittman, Udacity Course Developer
 cameron *at* udacity *dot* com
 */
 
+
+// Handles onsubmit for contact button
+function contactUs () {
+  alert('Thanks for clicking! This button doesn\'t do anything because this is a fake pizzeria :\)');
+};
+
 // As you may have realized, this website randomly generates pizzas.
 // Here are arrays of all possible pizza ingredients.
 var pizzaIngredients = {};
@@ -526,20 +532,22 @@ var latestKnownScrollY = 0;
 // ticking ensures rAF runs only on scroll
 var ticking = false;
 
+// onScroll runs on the 'scroll' event
+// When user scrolls, the scrollY is recorded.
 function onScroll() {
-  // onScroll runs on the 'scroll' event
-  // When user scrolls, the scrollY is recorded.
   latestKnownScrollY = window.scrollY;
+  ticking = true;
 }
 
 // The following code for sliding background pizzas was pulled from Ilya's demo found at:
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
-
 // Moves the sliding background pizzas based on scroll position
 function updatePositions() {
   frame++;
-  // this recursion is not looped because the rest of the code below has to run
+  console.log(ticking);
   requestAnimationFrame(updatePositions);
+  ticking = false;
+
   window.performance.mark("mark_start_frame");
   // TODO: something about saving the scroll position in a variable AKA debouncing scroll events
   // http://www.html5rocks.com/en/tutorials/speed/scrolling/#toc-debouncing
@@ -562,11 +570,11 @@ function updatePositions() {
 // runs onScroll() on scroll
 window.addEventListener('scroll', onScroll, false);
 
-// Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 20; i++) { // originally creates 200 pizza; now 20
+  var allPizzas = [];
+  for (var i = 0; i < 20; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza_bg.png";
@@ -574,12 +582,17 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.width = "77px";
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    document.querySelector("#movingPizzas1").appendChild(elem);
+    allPizzas.push(elem);
   }
+  console.log(allPizzas);
+
+  allPizzas.forEach(function(elem) {
+    document.querySelector("#movingPizzas1").appendChild(elem);
+    console.log('appended');
+  });  
+
   updatePositions();
 });
-
-
 
 
 
