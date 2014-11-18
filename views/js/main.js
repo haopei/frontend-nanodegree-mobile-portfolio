@@ -16,6 +16,8 @@ Cameron Pittman, Udacity Course Developer
 cameron *at* udacity *dot* com
 */
 
+// Constants
+NUMBER_OF_PIZZA = 100;
 
 // Handles onsubmit for contact button
 function contactUs () {
@@ -350,10 +352,6 @@ var makeRandomPizza = function() {
   var numberOfMeats = Math.floor((Math.random() * 4));
   var numberOfNonMeats = Math.floor((Math.random() * 3));
   var numberOfCheeses = Math.floor((Math.random() * 2));
-  
-  // var numberOfMeats = 1;
-  // var numberOfNonMeats = 1;
-  // var numberOfCheeses = 1;
 
   for (var i = 0; i < numberOfMeats; i++) {
     pizza = pizza + ingredientItemizer(selectRandomMeat());
@@ -398,7 +396,6 @@ var pizzaElementGenerator = function(i) {
   pizzaImageContainer.appendChild(pizzaImage);
   pizzaContainer.appendChild(pizzaImageContainer);
 
-
   pizzaDescriptionContainer.classList.add("col-md-6");
 
   pizzaName = document.createElement("h4");
@@ -406,7 +403,7 @@ var pizzaElementGenerator = function(i) {
   pizzaDescriptionContainer.appendChild(pizzaName);
 
   ul = document.createElement("ul");
-  ul.innerHTML = makeRandomPizza();
+  // ul.innerHTML = makeRandomPizza(); // causes too much repaint 
   pizzaDescriptionContainer.appendChild(ul);
   pizzaContainer.appendChild(pizzaDescriptionContainer);
 
@@ -440,10 +437,9 @@ var resizePizzas = function(size) {
   // Called by changePizzaSizes(size).
   function determineDx (elem, size) {
     var oldwidth = elem.offsetWidth; // offsetwidth causes extra work?
-    var windowwidth = document.querySelector("#randomPizzas").offsetWidth;
+    var windowwidth = document.querySelector("div#randomPizzas").offsetWidth;
     var oldsize = oldwidth / windowwidth;
 
-    // TODO: change to 3 sizes? no more xl?
     // Changes the slider value to a percent width
     function sizeSwitcher (size) {
       switch(size) {
@@ -495,11 +491,22 @@ var resizePizzas = function(size) {
 
 window.performance.mark("mark_start_generating"); // collect timing data
 
+
+
+// MAKE PIZZA
+
+
 // This for-loop actually creates and appends all of the pizzas when the page loads
-for (var i = 2; i < 100; i++) { // - generates 100 pizzas, avg 24ms
-  var pizzasDiv = document.getElementById("randomPizzas");
-  pizzasDiv.appendChild(pizzaElementGenerator(i));
+var pizzasDiv = document.getElementById("randomPizzas");
+var allPizzas = [];
+for (var i = 2; i < NUMBER_OF_PIZZA; i++) { // - generates 100 pizzas, avg 24ms
+  pizza = pizzaElementGenerator(i)
+  allPizzas.push(pizza);
 }
+
+allPizzas.forEach(function(pizza){
+  pizzasDiv.appendChild(pizza);
+});
 
 // User Timing API again. These measurements tell you how long it took to generate the initial pizzas
 window.performance.mark("mark_end_generating");
@@ -581,7 +588,7 @@ window.addEventListener('scroll', onScroll, false);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 4;
   var s = 256;
-  var allPizzas = [];
+  var allMovingPizzas = [];
   for (var i = 0; i < 20; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
@@ -590,10 +597,10 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.width = "77px";
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    allPizzas.push(elem);
+    allMovingPizzas.push(elem);
   }
 
-  allPizzas.forEach(function(elem) {
+  allMovingPizzas.forEach(function(elem) {
     document.querySelector("#movingPizzas1").appendChild(elem);
   });  
 

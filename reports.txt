@@ -16,6 +16,11 @@ Changes
 	> inlined css
 	> create array loop for pizza creation
 
+
+for loop (100 pizzas)
+	pizzaElementGenerator()
+		makeRandomPizza()
+			3 for loops
 	
 
 Notes
