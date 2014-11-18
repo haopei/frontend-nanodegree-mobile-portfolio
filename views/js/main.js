@@ -403,7 +403,7 @@ var pizzaElementGenerator = function(i) {
   pizzaDescriptionContainer.appendChild(pizzaName);
 
   ul = document.createElement("ul");
-  // ul.innerHTML = makeRandomPizza(); // causes too much repaint 
+  ul.innerHTML = makeRandomPizza();
   pizzaDescriptionContainer.appendChild(ul);
   pizzaContainer.appendChild(pizzaDescriptionContainer);
 
@@ -504,9 +504,14 @@ for (var i = 2; i < NUMBER_OF_PIZZA; i++) { // - generates 100 pizzas, avg 24ms
   allPizzas.push(pizza);
 }
 
+var fullItemList = "";
 allPizzas.forEach(function(pizza){
-  pizzasDiv.appendChild(pizza);
+  fullItemList = fullItemList.concat(pizza.outerHTML);
 });
+
+// adds string into html without replacing its existing content
+pizzasDiv.insertAdjacentHTML( 'beforeend', fullItemList );
+
 
 // User Timing API again. These measurements tell you how long it took to generate the initial pizzas
 window.performance.mark("mark_end_generating");
@@ -570,8 +575,8 @@ function updatePositions() {
   var scrollTop = latestKnownScrollY;
   for (var i = 0; i < itemsLength; i++) {
     var phase = Math.sin((scrollTop / 1250) + (i % 5));
-    // items[i].style.transform = "translateX(" + 100 * phase + "px)";
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+    items[i].style.transform = "translateX(" + 100 * phase + "px)";
+    // items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
   window.performance.mark("mark_end_frame");

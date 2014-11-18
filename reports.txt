@@ -41,6 +41,9 @@ Load Non-Critical CSS on pageload
 Self-documenting codes
 	http://stackoverflow.com/questions/209015/what-is-self-documenting-code-and-can-it-replace-well-documented-code
 
+-webkit-backface-visibility
+	http://davidwalsh.name/translate3d
+
 
 	Resources
 		Speed Checklist: http://www.sitespeed.io/rules/
