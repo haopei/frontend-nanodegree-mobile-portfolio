@@ -168,7 +168,7 @@ var ingredientItemizer = function(string) {
 }
 
 // Returns a string with random pizza ingredients nested inside <li> tags
-var makeRandomPizza = function() {
+var makeRandomPizzaIngredients = function() {
   var pizza = "";
   var numberOfMeats = Math.floor((Math.random() * 4));
   var numberOfNonMeats = Math.floor((Math.random() * 3));
@@ -224,7 +224,7 @@ var pizzaElementGenerator = function(i) {
   pizzaDescriptionContainer.appendChild(pizzaName);
 
   ul = document.createElement("ul");
-  ul.innerHTML = makeRandomPizza();
+  ul.innerHTML = makeRandomPizzaIngredients();
   pizzaDescriptionContainer.appendChild(ul);
   pizzaContainer.appendChild(pizzaDescriptionContainer);
 
@@ -307,7 +307,7 @@ var pizzasDiv = document.getElementById("randomPizzas");
 var allPizzas = [];
 for (var i = 2; i < NUMBER_OF_PIZZA; i++) {
   pizza = pizzaElementGenerator(i);
-  // pizza.querySelector("ul").innerHTML = makeRandomPizza();
+  // pizza.querySelector("ul").innerHTML = makeRandomPizzaIngredients();
   // pizza.querySelector("h4").innerHTML = randomPizzaName();
   allPizzas.push(pizza);
 }
