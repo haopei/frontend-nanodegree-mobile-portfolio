@@ -220,11 +220,11 @@ var pizzaElementGenerator = function(i) {
   pizzaDescriptionContainer.classList.add("col-md-6");
 
   pizzaName = document.createElement("h4");
-  // pizzaName.innerHTML = randomPizzaName();
+  pizzaName.innerHTML = randomPizzaName();
   pizzaDescriptionContainer.appendChild(pizzaName);
 
   ul = document.createElement("ul");
-  // ul.innerHTML = makeRandomPizza();
+  ul.innerHTML = makeRandomPizza();
   pizzaDescriptionContainer.appendChild(ul);
   pizzaContainer.appendChild(pizzaDescriptionContainer);
 
@@ -307,8 +307,8 @@ var pizzasDiv = document.getElementById("randomPizzas");
 var allPizzas = [];
 for (var i = 2; i < NUMBER_OF_PIZZA; i++) {
   pizza = pizzaElementGenerator(i);
-  pizza.querySelector("ul").innerHTML = makeRandomPizza();
-  pizza.querySelector("h4").innerHTML = randomPizzaName();
+  // pizza.querySelector("ul").innerHTML = makeRandomPizza();
+  // pizza.querySelector("h4").innerHTML = randomPizzaName();
   allPizzas.push(pizza);
 }
 
@@ -351,33 +351,28 @@ function logAverageFrame(times) {
 var latestKnownScrollY = 0;
 // ticking ensures rAF runs only on scroll
 var ticking = false;
-
 // onScroll runs on the 'scroll' event
 // When user scrolls, the scrollY is recorded.
 function onScroll() {
   latestKnownScrollY = window.scrollY;
-  ticking = true;
+  requestTick();
 }
 
 // The following code for sliding background pizzas was pulled from Ilya's demo found at:
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 // Moves the sliding background pizzas based on scroll position
+
+function requestTick() {
+  if (!ticking) {
+    requestAnimationFrame(updatePositions);
+  }
+  ticking = true;
+}
+
 function updatePositions() {
   frame++;
-  requestAnimationFrame(updatePositions);
   ticking = false;
-
-  window.performance.mark("mark_start_frame");
-  // TODO: something about saving the scroll position in a variable AKA debouncing scroll events
-  // http://www.html5rocks.com/en/tutorials/speed/scrolling/#toc-debouncing
-  
-  // ORIGINAL
-  // var items = document.querySelectorAll('.mover');
-  // for (var i = 0; i < items.length; i++) {
-  //   var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
-  //   items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
-  // }
-
+  window.performance.mark("mark_start_frame"); 
   var items = document.querySelectorAll('.mover');
   var itemsLength = items.length;
   var scrollTop = latestKnownScrollY;
@@ -391,7 +386,7 @@ function updatePositions() {
   window.performance.measure("measure_frame_duration", "mark_start_frame", "mark_end_frame");
   if (frame % 10 === 0) {
     var timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");
-    // logAverageFrame(timesToUpdatePosition);
+    logAverageFrame(timesToUpdatePosition);
   }
 }
 
