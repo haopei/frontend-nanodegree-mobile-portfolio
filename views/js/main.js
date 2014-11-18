@@ -550,13 +550,21 @@ function updatePositions() {
   window.performance.mark("mark_start_frame");
   // TODO: something about saving the scroll position in a variable AKA debouncing scroll events
   // http://www.html5rocks.com/en/tutorials/speed/scrolling/#toc-debouncing
+  
+  // ORIGINAL
+  // var items = document.querySelectorAll('.mover');
+  // for (var i = 0; i < items.length; i++) {
+  //   var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+  //   items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+  // }
+
   var items = document.querySelectorAll('.mover');
   var itemsLength = items.length;
   var scrollTop = latestKnownScrollY;
   for (var i = 0; i < itemsLength; i++) {
     var phase = Math.sin((scrollTop / 1250) + (i % 5));
-    items[i].style.transform = "translateX(" + 100*phase + "px)";
-    // items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+    // items[i].style.transform = "translateX(" + 100 * phase + "px)";
+    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
   window.performance.mark("mark_end_frame");
@@ -571,7 +579,7 @@ function updatePositions() {
 window.addEventListener('scroll', onScroll, false);
 
 document.addEventListener('DOMContentLoaded', function() {
-  var cols = 8;
+  var cols = 4;
   var s = 256;
   var allPizzas = [];
   for (var i = 0; i < 20; i++) {
@@ -582,15 +590,11 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.width = "77px";
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    elem.style.transform = "translateX(" + elem.basicLeft + "px)";
     allPizzas.push(elem);
-    console.log(elem.basicLeft);
   }
-  console.log(allPizzas);
 
   allPizzas.forEach(function(elem) {
     document.querySelector("#movingPizzas1").appendChild(elem);
-    console.log('appended');
   });  
 
   updatePositions();
