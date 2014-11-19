@@ -52,9 +52,15 @@ var adjectives = ["dark", "color", "whimsical", "shiny", "noise", "apocalyptic",
 var nouns = ["animals", "everyday", "fantasy", "gross", "horror", "jewelry", "places", "scifi"];
 
 // Handles onsubmit for contact button
-function contactUs () {
+document.getElementById('contact').addEventListener('submit', function() {
   alert('Thanks for clicking! This button doesn\'t do anything because this is a fake pizzeria :\)');
-};
+});
+
+// Listens for pizza resizing calls
+var resizerInput = document.getElementById('sizeSlider');
+resizerInput.addEventListener('change', function() {
+  resizePizzas(resizerInput.value);
+});
 
 // Name generator pulled from http://saturdaykid.com/usernames/generator.html
 // Capitalizes first letter of each word
