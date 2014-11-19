@@ -35,7 +35,6 @@ pizzaAdjs.apocalyptic = ["nuclear", "apocalyptic", "desolate", "atomic", "zombie
 pizzaAdjs.insulting = ["stupid", "idiotic", "fat", "ugly", "hideous", "grotesque", "dull", "dumb", "lazy", "sluggish", "brainless", "slow", "gullible", "obtuse", "dense", "dim", "dazed", "ridiculous", "witless", "daft", "crazy", "vapid", "inane", "mundane", "hollow", "vacuous", "boring", "insipid", "tedious", "monotonous", "weird", "bizarre", "backward", "moronic", "ignorant", "scatterbrained", "forgetful", "careless", "lethargic", "insolent", "indolent", "loitering", "gross", "disgusting", "bland", "horrid", "unseemly", "revolting", "homely", "deformed", "disfigured", "offensive", "cowardly", "weak", "villainous", "fearful", "monstrous", "unattractive", "unpleasant", "nasty", "beastly", "snide", "horrible", "syncophantic", "unhelpful", "bootlicking"];
 pizzaAdjs.praise = ["beautiful", "intelligent", "smart", "genius", "ingenious", "gorgeous", "pretty", "witty", "angelic", "handsome", "graceful", "talented", "exquisite", "enchanting", "fascinating", "interesting", "divine", "alluring", "ravishing", "wonderful", "magnificient", "marvelous", "dazzling", "cute", "charming", "attractive", "nifty", "delightful", "superior", "amiable", "gentle", "heroic", "courageous", "valiant", "brave", "noble", "daring", "fearless", "gallant", "adventurous", "cool", "enthusiastic", "fierce", "awesome", "radical", "tubular", "fearsome", "majestic", "grand", "stunning"];
 pizzaAdjs.scientific = ["scientific", "technical", "digital", "programming", "calculating", "formulating", "cyberpunk", "mechanical", "technological", "innovative", "brainy", "chemical", "quantum", "astro", "space", "theoretical", "atomic", "electronic", "gaseous", "investigative", "solar", "extinct", "galactic"]
-console.log(pizzaAdjs);
 
 // Nouns
 var pizzaNouns = {};
@@ -53,6 +52,16 @@ pizzaNouns.scifi = ["robot", "alien", "raygun", "spaceship", "UFO", "rocket", "p
 var adjectives = ["dark", "colors", "whimsy", "shiny", "noisy", "apocalyptic", "insulting", "praise", "scientific"];
 var nouns = ["animals", "everyday", "fantasy", "gross", "professions", "horror", "jewelry", "places", "scifi"];
 
+// Constants
+var NUMBER_OF_PIZZA = 100,
+    ADJ_LENGTH = adjectives.length,
+    NOUN_LENGTH = nouns.length,
+    MEAT_LENGTH = pizzaIngredients.meats.length,
+    NONMEAT_LENGTH = pizzaIngredients.nonMeats.length,
+    CHEESES_LENGTH = pizzaIngredients.cheeses.length,
+    SAUCES_LENGTH = pizzaIngredients.sauces.length,
+    CRUSTS_LENGTH = pizzaIngredients.crusts.length;
+
 // Handles onsubmit for contact button
 document.getElementById('contact').addEventListener('submit', function() {
   alert('Thanks for clicking! This button doesn\'t do anything because this is a fake pizzeria :\)');
@@ -64,105 +73,35 @@ resizerInput.addEventListener('change', function() {
   resizePizzas(resizerInput.value);
 });
 
-// Name generator pulled from http://saturdaykid.com/usernames/generator.html
-// Capitalizes first letter of each word
 String.prototype.capitalize = function() {
   return this.charAt(0).toUpperCase() + this.slice(1);
 };
-
-// Pulls adjective out of array using random number sent from generator
 
 function getAdj(key) {
   return pizzaAdjs[key];
 };
 
-// function getAdj(x){
-//   switch(x) {
-//     case "dark":
-//       return dark;
-//     case "color": 
-//       return colors;
-//     case "whimsical": 
-//       return whimsy;
-//     case "shiny":
-//       return shiny;
-//     case "noisy":
-//       return noisy;
-//     case "apocalyptic":
-//       return apocalyptic;
-//     case "insulting":
-//       return insulting;
-//     case "praise":
-//       return praise;
-//     case "scientific":
-//       return scientific;
-//     default:
-//       return scientific;
-//   };
-// };
-
-// Pulls noun out of array using random number sent from generator
 function getNoun(key) {
   return pizzaNouns[key];
 };
-// function getNoun(y) {
-//   switch(y) {
-//     case "animals": 
-//       return animals;
-//     case "profession": 
-//       return professions; 
-//     case "fantasy": 
-//       return fantasy;
-//     case "music":
-//       return music;
-//     case "horror":
-//       return horror;
-//     case "gross":
-//       return gross;
-//     case "everyday":
-//       return everyday;
-//     case "jewelry":
-//       return jewelry;
-//     case "places":
-//       return places;
-//     case "scifi":
-//       return scifi;
-//     default:
-//       return scifi;
-//   }; 
-// };
-
-// Constants
-var NUMBER_OF_PIZZA = 100,
-    ADJ_LENGTH = adjectives.length,
-    NOUN_LENGTH = nouns.length,
-    MEAT_LENGTH = pizzaIngredients.meats.length,
-    NONMEAT_LENGTH = pizzaIngredients.nonMeats.length,
-    CHEESES_LENGTH = pizzaIngredients.cheeses.length,
-    SAUCES_LENGTH = pizzaIngredients.sauces.length,
-    CRUSTS_LENGTH = pizzaIngredients.crusts.length;
-
 
 function randomNumber(range) {
   return Math.floor(Math.random() * range);
 }
 
-// Generates random numbers for getAdj and getNoun functions and returns a new pizza name
 function pizzaNameGenerator(adj, noun) {
   var adjectives = getAdj(adj);
   var nouns = getNoun(noun);
   var randomAdjective = randomNumber(ADJ_LENGTH);
   var randomNoun = randomNumber(NOUN_LENGTH);
-  // var randomAdjective = parseInt(Math.random() * ADJ_LENGTH);
-  // var randomNoun = parseInt(Math.random() * NOUN_LENGTH);
   var name = "The " + adjectives[randomAdjective].capitalize() + " " + nouns[randomNoun].capitalize();
   return name;
 };
 
 // Chooses random adjective and random noun
 function randomPizzaName() {
-  var randomNumberAdj = parseInt(Math.random() * ADJ_LENGTH);
-  var randomNumberNoun = parseInt(Math.random() * NOUN_LENGTH);
+  var randomNumberAdj = randomNumber(ADJ_LENGTH);
+  var randomNumberNoun = randomNumber(NOUN_LENGTH);
   return pizzaNameGenerator(adjectives[randomNumberAdj], nouns[randomNumberNoun]);
 };
 

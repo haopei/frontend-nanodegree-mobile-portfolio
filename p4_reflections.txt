@@ -12,8 +12,8 @@ Critical Rendering Path
 	[JS]
 	CSSOM
 	RENDERING TREE
-	LAYOUT
-	PAINT
+	LAYOUT (AKA REFLOW) - Computes geometry, position and size of elements.
+	PAINT (AKA RASTERIZING) Paint Setup and Paint events happen after layout.
 
 	CRP Metrics
 		1. Critical Path Length (shorten this)
@@ -77,6 +77,8 @@ BLOCKING
 	Javascript: blocks HTML Parsing (hence DOM construction), unless declared async. Inline JS will not be spotted by the pre-load scanner which only looks for src/href. 
 
 	Loading CSS: Blocks JS execution; blocks rendering. 
+
+	When the HTML Parser encounters a JS code, the DOM parsing pauses and gives control to the JS runtime. If the CSSOM has not finished building at this point, the JS execution pauses until this is done. Therefore, CSSOM blocks JS execution, which in turn blocks DOM construction.
 
 Dev Tool
 	Timeline > Parse HTML > Recalculate Style (EVENT)
