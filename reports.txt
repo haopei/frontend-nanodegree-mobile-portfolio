@@ -1,6 +1,5 @@
 General
 	Request Animation Frame takes a callback function, and requests the frame for the next re-paint cycle.
-
 	Browsers try to paint 60 frames per second
 
 Changes 
@@ -15,6 +14,7 @@ Changes
 	> separate phone.css
 	> inlined css
 	> create array loop for pizza creation
+	> abstracted contactUs() and resizePizza() away from the pizza.html and into the main.js
 
 
 for loop (100 pizzas)

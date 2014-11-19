@@ -166,6 +166,8 @@ var pizzaElementGenerator = function(i) {
 
   pizzaImage.src = "images/pizza.png";
   pizzaImage.classList.add("img-responsive");
+  pizzaImage.setAttribute("width", "232");
+  pizzaImage.setAttribute("height", "300");
   pizzaImageContainer.appendChild(pizzaImage);
   pizzaContainer.appendChild(pizzaImageContainer);
 
@@ -260,11 +262,10 @@ document.addEventListener('DOMContentLoaded', function() {
   var allMovingPizzas = [];
   for (var i = 0; i < 32; i++) {
     var elem = document.createElement('img');
-    // elem.className = 'mover';
     elem.classList.add('mover');
     elem.src = "images/pizza_bg.png";
-    elem.style.height = "100px";
-    elem.style.width = "77px";
+    elem.setAttribute("height", "100");
+    elem.setAttribute("width", "77");
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     allMovingPizzas.push(elem);
