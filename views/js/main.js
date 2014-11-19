@@ -62,17 +62,6 @@ var NUMBER_OF_PIZZA = 100,
     SAUCES_LENGTH = pizzaIngredients.sauces.length,
     CRUSTS_LENGTH = pizzaIngredients.crusts.length;
 
-// Handles onsubmit for contact button
-document.getElementById('contact').addEventListener('submit', function() {
-  alert('Thanks for clicking! This button doesn\'t do anything because this is a fake pizzeria :\)');
-});
-
-// Listens for pizza resizing calls
-var resizerInput = document.getElementById('sizeSlider');
-resizerInput.addEventListener('change', function() {
-  resizePizzas(resizerInput.value);
-});
-
 String.prototype.capitalize = function() {
   return this.charAt(0).toUpperCase() + this.slice(1);
 };
@@ -194,84 +183,16 @@ var pizzaElementGenerator = function(i) {
   return pizzaContainer;
 }
 
-// resizePizzas(size) is called when the slider in the "Our Pizzas" section of the website moves.
-var resizePizzas = function(size) { 
-  window.performance.mark("mark_start_resize");   // User Timing API function
+// ORIGINAL PIZZARESIZE CODE GOES HERE; MOVED TO resizer.js
 
-  // Changes the value for the size of the pizza above the slider
-  function changeSliderLabel(size) {
-    switch(size) {
-      case "1":
-        document.querySelector("#pizzaSize").innerHTML = "Small";
-        return;
-      case "2":
-        document.querySelector("#pizzaSize").innerHTML = "Medium";
-        return;
-      case "3":
-        document.querySelector("#pizzaSize").innerHTML = "Large";
-        return;
-      default:
-        console.log("bug in changeSliderLabel");
-    }
-  }
-
-  changeSliderLabel(size);
-
-  // Returns the size difference to change a pizza element from one size to another. 
-  // Called by changePizzaSizes(size).
-  function determineDx (elem, size) {
-    var oldwidth = elem.offsetWidth; // offsetwidth causes extra work?
-    var windowwidth = document.querySelector("div#randomPizzas").offsetWidth;
-    var oldsize = oldwidth / windowwidth;
-
-    // Changes the slider value to a percent width
-    function sizeSwitcher (size) {
-      switch(size) {
-        case "1":
-          return 0.25;
-        case "2":
-          return 0.3333;
-        case "3":
-          return 0.5;
-        default:
-          console.log("bug in sizeSwitcher");
-      }
-    }
-
-    var newsize = sizeSwitcher(size);
-    var dx = (newsize - oldsize) * windowwidth;
-
-    return dx;
-  }
-
-  // Iterates through pizza elements on the page and changes their widths
-  function changePizzaSizes(size) {
-    var randomPizzaContainerAll = document.querySelectorAll(".randomPizzaContainer");
-    var pizzaContainerLength = randomPizzaContainerAll.length;
-    for (var i = 0; i < pizzaContainerLength; i++) {
-      var dx = determineDx(randomPizzaContainerAll[i], size);
-      var newwidth = (randomPizzaContainerAll[i].offsetWidth + dx) + 'px';
-      randomPizzaContainerAll[i].style.width = newwidth;
-    }
-  }
-  changePizzaSizes(size);
-
-  // User Timing API is awesome
-  window.performance.mark("mark_end_resize");
-  window.performance.measure("measure_pizza_resize", "mark_start_resize", "mark_end_resize");
-  var timeToResize = window.performance.getEntriesByName("measure_pizza_resize");
-  console.log("Time to resize pizzas: " + timeToResize[0].duration + "ms");
-}
 
 window.performance.mark("mark_start_generating");
 
-// This for-loop actually creates and appends all of the pizzas when the page loads
 var pizzasDiv = document.getElementById("randomPizzas");
 var allPizzas = [];
 for (var i = 2; i < NUMBER_OF_PIZZA; i++) {
   pizza = pizzaElementGenerator(i);
   pizzasDiv.appendChild(pizza);
-  // allPizzas.push(pizza);
 }
 
 // User Timing API again. These measurements tell you how long it took to generate the initial pizzas
@@ -295,25 +216,13 @@ function logAverageFrame(times) {
   console.log("Average time to generate last 10 frames: " + sum / 10 + "ms");
 }
 
-// Debouncing Scroll Event
-// http://www.html5rocks.com/en/tutorials/speed/scrolling/#toc-debouncing
-// 1. Cached the last known scroll. 
-// 2. 
-
-// caches the latest scroll vertical position of the browser
 var latestKnownScrollY = 0;
-// ticking ensures rAF runs only on scroll
 var ticking = false;
-// onScroll runs on the 'scroll' event
-// When user scrolls, the scrollY is recorded.
+
 function onScroll() {
   latestKnownScrollY = window.scrollY;
   requestTick();
 }
-
-// The following code for sliding background pizzas was pulled from Ilya's demo found at:
-// https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
-// Moves the sliding background pizzas based on scroll position
 
 function requestTick() {
   if (!ticking) {
@@ -343,7 +252,6 @@ function updatePositions() {
   }
 }
 
-// runs onScroll() on scroll
 window.addEventListener('scroll', onScroll, false);
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -366,6 +274,17 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector("#movingPizzas1").appendChild(elem);
   });  
   updatePositions();
+});
+
+// Handles onsubmit for contact button
+document.getElementById('contact').addEventListener('submit', function() {
+  alert('Thanks for clicking! This button doesn\'t do anything because this is a fake pizzeria :\)');
+});
+
+// Listens for pizza resizing calls
+var resizerInput = document.getElementById('sizeSlider');
+resizerInput.addEventListener('change', function() {
+  resizePizzas(resizerInput.value);
 });
 
 
