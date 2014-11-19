@@ -35,6 +35,9 @@ Notes
 	Browser caching css, js, imgs
 	Look out for duplicate css/js codes and files
 
+De-boundcing scroll events
+http://www.html5rocks.com/en/tutorials/speed/animations/
+
 Load Non-Critical CSS on pageload
 	source: https://docs.google.com/presentation/d/1IRHyU7_crIiCjl0Gvue0WY3eY_eYvFQvSfwQouW9368/present?slide=id.gebc26cd7_8_52
 
@@ -43,6 +46,7 @@ Self-documenting codes
 
 -webkit-backface-visibility
 	http://davidwalsh.name/translate3d
+
 
 
 	Resources
