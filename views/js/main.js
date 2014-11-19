@@ -270,19 +270,9 @@ var pizzasDiv = document.getElementById("randomPizzas");
 var allPizzas = [];
 for (var i = 2; i < NUMBER_OF_PIZZA; i++) {
   pizza = pizzaElementGenerator(i);
-  // pizza.querySelector("ul").innerHTML = makeRandomPizzaIngredients();
-  // pizza.querySelector("h4").innerHTML = randomPizzaName();
-  allPizzas.push(pizza);
+  pizzasDiv.appendChild(pizza);
+  // allPizzas.push(pizza);
 }
-
-var fullItemList = "";
-allPizzas.forEach(function(pizza){
-  fullItemList = fullItemList.concat(pizza.outerHTML);
-});
-
-// adds string into html without replacing its existing content
-pizzasDiv.insertAdjacentHTML( 'beforeend', fullItemList );
-
 
 // User Timing API again. These measurements tell you how long it took to generate the initial pizzas
 window.performance.mark("mark_end_generating");
