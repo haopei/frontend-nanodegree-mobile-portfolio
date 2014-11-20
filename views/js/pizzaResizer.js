@@ -1,9 +1,5 @@
-// resizePizzas(size) is called when the slider in the "Our Pizzas" section of the website moves.
 var resizePizzas = function(size) { 
-  window.performance.mark("mark_start_resize");   // User Timing API function
-
-  // Changes the value for the size of the pizza above the slider
-
+  window.performance.mark("mark_start_resize");
   function changeSliderLabel(size) {
     var pizzaSizeDiv = document.querySelector("#pizzaSize");
     switch(size) {
@@ -24,7 +20,6 @@ var resizePizzas = function(size) {
   changeSliderLabel(size);
 
   // Returns the size difference to change a pizza element from one size to another. 
-  // Called by changePizzaSizes(size).
   function determineDx (elem, size) {
     var oldwidth = elem.offsetWidth; // offsetwidth causes extra work?
     var windowwidth = document.querySelector("div#randomPizzas").offsetWidth;
