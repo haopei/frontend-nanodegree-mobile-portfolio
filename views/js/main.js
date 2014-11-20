@@ -142,6 +142,8 @@ var makeRandomPizzaIngredients = function() {
 }
 
 // returns a DOM element for each pizza
+// TODO: initial load spends 47ms on evaluating this script's functions:
+// randomPizzaName() and makeRandomPizzaIngredients()
 var pizzaElementGenerator = function(i) {
   var pizzaContainer,
       pizzaImageContainer,
@@ -232,7 +234,7 @@ function updatePositions() {
   var scrollTop = latestKnownScrollY;
   for (var i = 0; i < itemsLength; i++) {
     var phase = Math.sin((scrollTop / 1250) + (i % 5));
-    items[i].style.left = items[i].basicLeft +'px';
+    // items[i].style.left = items[i].basicLeft +'px';
     items[i].style.transform = "translateX(" + 100 * phase + "px)";
   }
 
@@ -257,6 +259,7 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.setAttribute("height", "100");
     elem.setAttribute("width", "77");
     elem.basicLeft = (i % cols) * s;
+    elem.style.left = elem.basicLeft + "px";
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     allMovingPizzas.push(elem);
   }
