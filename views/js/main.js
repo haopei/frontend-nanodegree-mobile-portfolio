@@ -59,7 +59,8 @@ var NUMBER_OF_PIZZA = 100,
     NONMEAT_LENGTH = pizzaIngredients.nonMeats.length,
     CHEESES_LENGTH = pizzaIngredients.cheeses.length,
     SAUCES_LENGTH = pizzaIngredients.sauces.length,
-    CRUSTS_LENGTH = pizzaIngredients.crusts.length;
+    CRUSTS_LENGTH = pizzaIngredients.crusts.length,
+    VIEWPORT_WIDTH = window.innerWidth;
 
 String.prototype.capitalize = function() {
   return this.charAt(0).toUpperCase() + this.slice(1);
@@ -150,7 +151,20 @@ var pizzaElementGenerator = function(i) {
       pizzaImage,
       pizzaDescriptionContainer,
       pizzaName,
-      ul;
+      ul,
+      imgSrc,
+      imgHeight,
+      imgWidth;
+
+  imgSrc = "images/pizza.png";
+  imgWidth = "232";
+  imgHeight = "300";
+  
+  if (VIEWPORT_WIDTH < 500) {
+    imgSrc = "images/pizza_small.png";
+    imgWidth = "32";
+    imgHeight = "41";
+  }
 
   pizzaContainer  = document.createElement("div");
   pizzaImageContainer = document.createElement("div");
@@ -163,10 +177,10 @@ var pizzaElementGenerator = function(i) {
   pizzaContainer.id = "pizza" + i;
   pizzaImageContainer.classList.add("col-md-6");
 
-  pizzaImage.src = "images/pizza.png";
+  pizzaImage.src = imgSrc;
   pizzaImage.classList.add("img-responsive");
-  pizzaImage.setAttribute("width", "232");
-  pizzaImage.setAttribute("height", "300");
+  pizzaImage.setAttribute("width", imgWidth);
+  pizzaImage.setAttribute("height", imgHeight);
   pizzaImageContainer.appendChild(pizzaImage);
   pizzaContainer.appendChild(pizzaImageContainer);
 
@@ -255,7 +269,7 @@ document.addEventListener('DOMContentLoaded', function() {
   for (var i = 0; i < 32; i++) {
     var elem = document.createElement('img');
     elem.classList.add('mover');
-    elem.src = "images/pizza_bg.png";
+    elem.src = "images/mover.png";
     elem.setAttribute("height", "100");
     elem.setAttribute("width", "77");
     elem.basicLeft = (i % cols) * s;
