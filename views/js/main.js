@@ -52,7 +52,6 @@ pizzaNouns.scifi = ["robot", "alien", "raygun", "spaceship", "UFO", "rocket", "p
 var adjectives = ["dark", "colors", "whimsy", "shiny", "noisy", "apocalyptic", "insulting", "praise", "scientific"];
 var nouns = ["animals", "everyday", "fantasy", "gross", "professions", "horror", "jewelry", "places", "scifi"];
 
-// Constants
 var NUMBER_OF_PIZZA = 100,
     ADJ_LENGTH = adjectives.length,
     NOUN_LENGTH = nouns.length,
@@ -87,7 +86,6 @@ function pizzaNameGenerator(adj, noun) {
   return name;
 };
 
-// Chooses random adjective and random noun
 function randomPizzaName() {
   var randomNumberAdj = randomNumber(ADJ_LENGTH);
   var randomNumberNoun = randomNumber(NOUN_LENGTH);
@@ -122,9 +120,9 @@ var ingredientItemizer = function(string) {
 // Returns a string with random pizza ingredients nested inside <li> tags
 var makeRandomPizzaIngredients = function() {
   var pizza = "";
-  var numberOfMeats = Math.floor((Math.random() * 4));
-  var numberOfNonMeats = Math.floor((Math.random() * 3));
-  var numberOfCheeses = Math.floor((Math.random() * 2));
+  var numberOfMeats = randomNumber(4);
+  var numberOfNonMeats = randomNumber(3);
+  var numberOfCheeses = randomNumber(2);
 
   for (var i = 0; i < numberOfMeats; i++) {
     pizza = pizza + ingredientItemizer(selectRandomMeat());
@@ -140,18 +138,17 @@ var makeRandomPizzaIngredients = function() {
 
   pizza = pizza + ingredientItemizer(selectRandomSauce());
   pizza = pizza + ingredientItemizer(selectRandomCrust());
-
   return pizza;
 }
 
 // returns a DOM element for each pizza
 var pizzaElementGenerator = function(i) {
-  var pizzaContainer,             // contains pizza title, image and list of ingredients
-      pizzaImageContainer,        // contains the pizza image
-      pizzaImage,                 // the pizza image itself
-      pizzaDescriptionContainer,  // contains the pizza title and list of ingredients
-      pizzaName,                  // the pizza name itself
-      ul;                         // the list of ingredients
+  var pizzaContainer,
+      pizzaImageContainer,
+      pizzaImage,
+      pizzaDescriptionContainer,
+      pizzaName,
+      ul;
 
   pizzaContainer  = document.createElement("div");
   pizzaImageContainer = document.createElement("div");
@@ -161,7 +158,7 @@ var pizzaElementGenerator = function(i) {
   pizzaContainer.classList.add("randomPizzaContainer");
   pizzaContainer.style.width = "33.33%";
   pizzaContainer.style.height = "325px";
-  pizzaContainer.id = "pizza" + i;                // gives each pizza element a unique id
+  pizzaContainer.id = "pizza" + i;
   pizzaImageContainer.classList.add("col-md-6");
 
   pizzaImage.src = "images/pizza.png";
@@ -187,7 +184,6 @@ var pizzaElementGenerator = function(i) {
 
 // ORIGINAL PIZZARESIZE CODE GOES HERE; MOVED TO resizer.js
 
-
 window.performance.mark("mark_start_generating");
 
 var pizzasDiv = document.getElementById("randomPizzas");
@@ -203,12 +199,6 @@ window.performance.measure("measure_pizza_generation", "mark_start_generating", 
 var timeToGenerate = window.performance.getEntriesByName("measure_pizza_generation");
 console.log("Time to generate 100 pizzas on load: " + timeToGenerate[0].duration + "ms");
 
-// Iterator for number of times the pizzas in the background have scrolled.
-// Used by updatePositions() to decide when to log the average time per frame
-var frame = 0;
-
-// Logs the average amount of time per 10 frames needed to move the sliding background pizzas on scroll.
-// times is the array of User Timing measurements from updatePositions()
 function logAverageFrame(times) {
   var numberOfEntries = times.length;
   var sum = 0;
@@ -232,7 +222,7 @@ function requestTick() {
   }
   ticking = true;
 }
-
+var frame = 0;
 function updatePositions() {
   frame++;
   ticking = false;
@@ -287,17 +277,3 @@ var resizerInput = document.getElementById('sizeSlider');
 resizerInput.addEventListener('change', function() {
   resizePizzas(resizerInput.value);
 });
-
-
-
-
-
-// Animation Loops in JavaScript using requestAnimationFrame
-// https://www.youtube.com/watch?v=rNsC1VI9388
-
-// http://www.paulirish.com/2012/why-moving-elements-with-translate-is-better-than-posabs-topleft/
-
-// Google I/O 2012 - Jank Busters: Building Performant Web Apps
-// Exact example as this project
-// heavy css affects painting
-// https://www.youtube.com/watch?v=hAzhayTnhEI

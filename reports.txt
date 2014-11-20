@@ -48,6 +48,17 @@ Self-documenting codes
 	http://davidwalsh.name/translate3d
 
 
+// Animation Loops in JavaScript using requestAnimationFrame
+// https://www.youtube.com/watch?v=rNsC1VI9388
+
+// http://www.paulirish.com/2012/why-moving-elements-with-translate-is-better-than-posabs-topleft/
+
+// Google I/O 2012 - Jank Busters: Building Performant Web Apps
+// Exact example as this project
+// heavy css affects painting
+// https://www.youtube.com/watch?v=hAzhayTnhEI
+
+
 
 	Resources
 		Speed Checklist: http://www.sitespeed.io/rules/
