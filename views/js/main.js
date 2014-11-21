@@ -261,6 +261,7 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.basicLeft = (i % cols) * s;
     elem.style.left = elem.basicLeft + "px";
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
+    elem.style.position = "fixed";
     allMovingPizzas.push(elem);
   }
 
